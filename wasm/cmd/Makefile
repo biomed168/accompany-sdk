@@ -1,6 +1,7 @@
 .PHONY: ios build install mac windows
 
-WASM_BIN_NAME=accompany.wasm
+WASM_BIN_NAME = /Users/cong/my/accompany-electron/src/renderer/wasm/accompany.wasm
+
 
 
 #新加target的时候，下面的命令行记得用tab顶格

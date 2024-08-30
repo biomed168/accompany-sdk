@@ -21,13 +21,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/openimsdk/tools/errs"
 	"github.com/openimsdk/tools/log"
 	"reflect"
 	"runtime"
 	"runtime/debug"
 	"time"
-
-	"github.com/openimsdk/tools/errs"
 )
 
 func isNumeric(kind reflect.Kind) bool {
@@ -241,7 +240,7 @@ func call(callback sdk_callback.Base, operationID string, fn any, args ...any) {
 	go func() {
 		res, err := call_(operationID, fn, args...)
 		if err != nil {
-			if code, ok := err.(errs.CodeError); ok {
+			if code, ok := err.(sdkerrs.CodeError); ok {
 				callback.OnError(int32(code.Code()), code.Error())
 			} else {
 				callback.OnError(sdkerrs.UnknownCode, fmt.Sprintf("error %T not implement CodeError: %s", err, err))

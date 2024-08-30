@@ -2,10 +2,10 @@ package sdk
 
 import (
 	"accompany-sdk/pkg/ccontext"
+	"accompany-sdk/pkg/sdkerrs"
 	"accompany-sdk/sdk_callback"
 	"accompany-sdk/sdk_struct"
 	"context"
-	"github.com/openimsdk/tools/errs"
 	"os/user"
 	"strings"
 	"sync"
@@ -24,7 +24,7 @@ var (
 // CheckResourceLoad checks the SDK is resource load status.
 func CheckResourceLoad(uSDK *LoginMgr, funcName string) error {
 	if uSDK == nil {
-		return errs.New("SDK not initialized,userForSDK is nil", "funcName", funcName).Wrap()
+		return sdkerrs.New("SDK not initialized,userForSDK is nil", "funcName", funcName).Wrap()
 	}
 	if funcName == "" {
 		return nil
@@ -34,7 +34,7 @@ func CheckResourceLoad(uSDK *LoginMgr, funcName string) error {
 		return nil
 	}
 	if uSDK.getLoginStatus(context.Background()) != Logged {
-		return errs.New("SDK not logged in", "funcName", funcName).Wrap()
+		return sdkerrs.New("SDK not logged in", "funcName", funcName).Wrap()
 	}
 	return nil
 }

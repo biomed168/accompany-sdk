@@ -1,4 +1,4 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
+// Copyright © 2023 OpenIM. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,25 +23,5 @@ var (
 	ErrNetwork        = errs.NewCodeError(NetworkError, "NetworkError")
 	ErrNetworkTimeOut = errs.NewCodeError(NetworkTimeoutError, "NetworkTimeoutError")
 
-	ErrGroupIDNotFound = errs.NewCodeError(GroupIDNotFoundError, "GroupIDNotFoundError")
-	ErrUserIDNotFound  = errs.NewCodeError(UserIDNotFoundError, "UserIDNotFoundError")
-
 	ErrResourceLoad = errs.NewCodeError(ResourceLoadNotCompleteError, "ResourceLoadNotCompleteError")
-
-	//消息相关
-	ErrFileNotFound             = errs.NewCodeError(FileNotFoundError, "RecordNotFoundError")
-	ErrMsgDecodeBinaryWs        = errs.NewCodeError(MsgDecodeBinaryWsError, "MsgDecodeBinaryWsError")
-	ErrMsgDeCompression         = errs.NewCodeError(MsgDeCompressionError, "MsgDeCompressionError")
-	ErrMsgBinaryTypeNotSupport  = errs.NewCodeError(MsgBinaryTypeNotSupportError, "MsgTypeNotSupportError")
-	ErrMsgRepeated              = errs.NewCodeError(MsgRepeatError, "only failed message can be repeatedly send")
-	ErrMsgContentTypeNotSupport = errs.NewCodeError(MsgContentTypeNotSupportError, "contentType not support currently") // msg 	// msg
-
-	//会话相关
-	ErrNotSupportOpt = errs.NewCodeError(NotSupportOptError, "super group not support this opt")
-	//群组相关
-
-	ErrGroupType = errs.NewCodeError(GroupTypeErr, "group type error")
-
-	ErrLoginOut    = errs.NewCodeError(LoginOutError, "LoginOutError")
-	ErrLoginRepeat = errs.NewCodeError(LoginRepeatError, "LoginRepeatError")
 )
