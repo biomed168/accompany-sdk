@@ -6,9 +6,11 @@ import (
 	"accompany-sdk/sdk_callback"
 	"accompany-sdk/sdk_struct"
 	"context"
+	"github.com/openimsdk/tools/log"
 	"os/user"
 	"strings"
 	"sync"
+	"time"
 )
 
 const (
@@ -77,10 +79,15 @@ func (u *LoginMgr) InitSDK(config sdk_struct.SDKConfig, listener sdk_callback.On
 	u.info = &ccontext.GlobalConfig{}
 	u.info.SDKConfig = config
 	u.connListener = listener
+
+	ctx := ccontext.WithInfo(context.Background(), u.info)
+	u.ctx, u.cancel = context.WithCancel(ctx)
+	u.setLoginStatus(Logged)
 	return true
 }
 
-func (u *LoginMgr) login(ctx context.Context, userID, token string) error {
+func (u *LoginMgr) Login(ctx context.Context, userID, token string) error {
 	u.setLoginStatus(Logged)
+	log.ZInfo(ctx, "login success...", "login cost time: ", time.Since(time.Now()))
 	return nil
 }
