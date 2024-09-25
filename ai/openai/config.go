@@ -1,6 +1,8 @@
 package openai
 
-import "github.com/mylxsw/aidea-server/config"
+import (
+	"accompany-sdk/ai_struct"
+)
 
 type Config struct {
 	Enable             bool
@@ -12,7 +14,7 @@ type Config struct {
 	AutoProxy          bool
 }
 
-func parseMainConfig(conf *config.Config) *Config {
+func parseMainConfig(conf *ai_struct.OpenAiConfig) *Config {
 	return &Config{
 		Enable:             conf.EnableOpenAI,
 		OpenAIAzure:        conf.OpenAIAzure,
@@ -24,7 +26,7 @@ func parseMainConfig(conf *config.Config) *Config {
 	}
 }
 
-func parseBackupConfig(conf *config.Config) *Config {
+func parseBackupConfig(conf *ai_struct.OpenAiConfig) *Config {
 	return &Config{
 		Enable:             conf.EnableFallbackOpenAI,
 		OpenAIAzure:        conf.FallbackOpenAIAzure,
@@ -36,7 +38,7 @@ func parseBackupConfig(conf *config.Config) *Config {
 	}
 }
 
-func parseDalleConfig(conf *config.Config) *Config {
+func parseDalleConfig(conf *ai_struct.OpenAiConfig) *Config {
 	if conf.DalleUsingOpenAISetting {
 		return &Config{
 			Enable:             conf.EnableOpenAI && conf.EnableOpenAIDalle,

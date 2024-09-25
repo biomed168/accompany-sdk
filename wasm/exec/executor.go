@@ -1,25 +1,12 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 //go:build js && wasm
 
 package exec
 
 import (
-	"accompany-sdk/pkg/log"
 	"accompany-sdk/pkg/utils"
+	"context"
 	"errors"
+	"github.com/openimsdk/tools/log"
 	"runtime"
 	"syscall/js"
 	"time"
@@ -33,13 +20,11 @@ type CallbackData struct {
 
 const TIMEOUT = 5
 
-var ErrType = errors.New("from javascript data type err")
-var PrimaryKeyNull = errors.New("primary key is null err")
-
 var ErrTimoutFromJavaScript = errors.New("invoke javascript timeout，maybe should check  function from javascript")
 var jsErr = js.Global().Get("Error")
 
 func Exec(args ...interface{}) (output interface{}, err error) {
+	ctx := context.Background()
 	defer func() {
 		if r := recover(); r != nil {
 			switch x := r.(type) {
@@ -72,7 +57,7 @@ func Exec(args ...interface{}) (output interface{}, err error) {
 				}
 			}
 		}()
-		log.Debug("js then funcation", "=> (main go context) "+funcName+" with respone ", args[0].String())
+		log.ZDebug(ctx, "js then funcation", "=> (main go context) "+funcName+" with respone ", args[0].String())
 		thenChannel <- args
 		return nil
 	})
@@ -90,7 +75,7 @@ func Exec(args ...interface{}) (output interface{}, err error) {
 				}
 			}
 		}()
-		log.Debug("js catch funcation", "=> (main go context) "+funcName+" with respone ", args[0].String())
+		log.ZDebug(ctx, "js catch funcation", "=> (main go context) "+funcName+" with respone ", args[0].String())
 		catchChannel <- args
 		return nil
 	})

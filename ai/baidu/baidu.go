@@ -11,8 +11,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mylxsw/asteria/log"
 	"github.com/mylxsw/go-utils/array"
+	"github.com/openimsdk/tools/log"
 	"gopkg.in/resty.v1"
 )
 
