@@ -1,6 +1,12 @@
 # 跨端sdk
 
+核心业务逻辑使用golang进行开发，编译后嵌入各个端
+
 ## 思路
+
+### pc & macos
+
+electron， 如果在electron环境，可使用sqlite3
 
 ### web
 
