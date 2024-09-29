@@ -47,3 +47,8 @@ func (w *WrapperInit) Login(_ js.Value, args []js.Value) interface{} {
 	callback := event_listener.NewBaseCallback(utils.FirstLower(utils.GetSelfFuncName()), w.commonFunc)
 	return event_listener.NewCaller(sdk.Login, callback, &args).AsyncCallWithCallback()
 }
+
+func (w *WrapperInit) AskOpenAi(_ js.Value, args []js.Value) interface{} {
+	callback := event_listener.NewBaseCallback(utils.FirstLower(utils.GetSelfFuncName()), w.commonFunc)
+	return event_listener.NewCaller(sdk.AskOpenAi, callback, &args).AsyncCallWithCallback()
+}

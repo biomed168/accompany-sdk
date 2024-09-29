@@ -2,13 +2,13 @@ package chat
 
 import (
 	openai2 "accompany-sdk/ai/openai"
+	"accompany-sdk/pkg/misc"
+	"accompany-sdk/pkg/uploader"
 	"context"
-	"github.com/mylxsw/aidea-server/pkg/misc"
-	"github.com/mylxsw/aidea-server/pkg/uploader"
 	"strings"
 
-	"github.com/mylxsw/asteria/log"
-	"github.com/mylxsw/go-utils/array"
+	"accompany-sdk/pkg/utils/array"
+	"github.com/openimsdk/tools/log"
 	"github.com/sashabaranov/go-openai"
 )
 
@@ -46,7 +46,7 @@ func (chat *OpenAIChat) initRequest(req Request) (*openai.ChatCompletionRequest,
 						if err == nil {
 							url = encoded
 						} else {
-							log.With(err).Errorf("download remote image failed: %s", item.ImageURL.URL)
+							log.ZWarn(context.Background(), "download remote image failed", err, "url", item.ImageURL.URL)
 						}
 					} else {
 						imageMimeType, err := misc.Base64ImageMediaType(url)
@@ -89,7 +89,7 @@ func (chat *OpenAIChat) Chat(ctx context.Context, req Request) (*Response, error
 	res, err := chat.oai.CreateChatCompletion(ctx, *openaiReq)
 	if err != nil {
 		if strings.Contains(err.Error(), "content management policy") {
-			log.With(err).Errorf("违反 Azure OpenAI 内容管理策略")
+			log.ZError(ctx, "违反 Azure OpenAI 内容管理策略", err)
 			return nil, ErrContentFilter
 		}
 
@@ -120,12 +120,7 @@ func (chat *OpenAIChat) ChatStream(ctx context.Context, req Request) (<-chan Res
 	stream, err := chat.oai.ChatStream(ctx, *openaiReq)
 	if err != nil {
 		if strings.Contains(err.Error(), "content management policy") {
-			log.WithFields(log.Fields{
-				"error":   err,
-				"message": req.assembleMessage(),
-				"model":   req.Model,
-				"room_id": req.RoomID,
-			}).Errorf("违反 Azure OpenAI 内容管理策略")
+			log.ZError(ctx, "违反 Azure OpenAI 内容管理策略", err, "model", req.Model, "room_id", req.RoomID)
 			return nil, ErrContentFilter
 		}
 

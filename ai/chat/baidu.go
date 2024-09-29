@@ -1,9 +1,9 @@
 package chat
 
 import (
+	"accompany-sdk/ai/baidu"
 	"context"
 	"fmt"
-	"github.com/mylxsw/aidea-server/pkg/ai/baidu"
 	"strings"
 )
 

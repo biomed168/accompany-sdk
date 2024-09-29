@@ -62,7 +62,7 @@ func MaskStr(content string, left int) string {
 
 func HashID(id int64) string {
 	hd := hashids.NewData()
-	hd.Salt = "aidea is a chat bot for AI, by mylxsw"
+	hd.Salt = "is a chat bot for AI"
 	hd.MinLength = 6
 
 	h, _ := hashids.NewWithData(hd)

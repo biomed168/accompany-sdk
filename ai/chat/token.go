@@ -1,9 +1,9 @@
 package chat
 
 import (
+	"accompany-sdk/pkg/utils/array"
 	"errors"
 	"fmt"
-	"github.com/mylxsw/go-utils/array"
 	"github.com/pkoukk/tiktoken-go"
 	"strings"
 )

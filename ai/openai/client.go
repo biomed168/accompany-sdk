@@ -1,9 +1,9 @@
 package openai
 
 import (
+	"accompany-sdk/pkg/ai/control"
 	"context"
-	"github.com/mylxsw/aidea-server/pkg/ai/control"
-	"github.com/mylxsw/asteria/log"
+	"github.com/openimsdk/tools/log"
 	"github.com/sashabaranov/go-openai"
 	"io"
 )
@@ -37,10 +37,7 @@ func (proxy *ClientImpl) CreateChatCompletion(ctx context.Context, request opena
 	}
 
 	if proxy.backup != nil {
-		log.WithFields(log.Fields{
-			"request": request,
-			"error":   err.Error(),
-		}).Warningf("use control openai client")
+		log.ZError(ctx, "use backup openai client", err, "request", request)
 		return proxy.backup.CreateChatCompletion(ctx, request)
 	}
 
@@ -61,10 +58,7 @@ func (proxy *ClientImpl) CreateChatCompletionStream(ctx context.Context, request
 	}
 
 	if proxy.backup != nil {
-		log.WithFields(log.Fields{
-			"request": request,
-			"error":   err.Error(),
-		}).Warningf("use control openai client")
+		log.ZError(ctx, "use backup openai client", err, "request", request)
 		return proxy.backup.CreateChatCompletionStream(ctx, request)
 	}
 
@@ -88,10 +82,7 @@ func (proxy *ClientImpl) ChatStream(ctx context.Context, request openai.ChatComp
 	}
 
 	if proxy.backup != nil {
-		log.WithFields(log.Fields{
-			"request": request,
-			"error":   err.Error(),
-		}).Warningf("use control openai client")
+		log.ZError(ctx, "use backup openai client", err, "request", request)
 		return proxy.backup.ChatStream(ctx, request)
 	}
 
@@ -160,12 +151,7 @@ func (proxy *ClientImpl) QuickAsk(ctx context.Context, prompt string, question s
 	}
 
 	if proxy.backup != nil {
-		log.WithFields(log.Fields{
-			"prompt":          prompt,
-			"question":        question,
-			"max_token_count": maxTokenCount,
-			"error":           err.Error(),
-		}).Error("use control openai client")
+		log.ZError(ctx, "use backup openai client", err, "prompt", prompt, "question", question)
 		return proxy.backup.QuickAsk(ctx, prompt, question, maxTokenCount)
 	}
 

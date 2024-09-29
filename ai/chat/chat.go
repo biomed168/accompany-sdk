@@ -1,14 +1,13 @@
 package chat
 
 import (
+	"accompany-sdk/pkg/misc"
 	"context"
 	"errors"
 	"fmt"
-	"github.com/mylxsw/aidea-server/pkg/misc"
 	"strings"
 
-	"github.com/mylxsw/aidea-server/config"
-	"github.com/mylxsw/go-utils/array"
+	"accompany-sdk/pkg/utils/array"
 )
 
 var (
@@ -277,7 +276,7 @@ func (req Request) Fix(chat Chat, maxContextLength int64, maxTokenCount int) (*R
 	return &req, int64(inputTokens), nil
 }
 
-func (req Request) ResolveCalFeeModel(conf *config.Config) string {
+func (req Request) ResolveCalFeeModel() string {
 	return req.Model
 }
 

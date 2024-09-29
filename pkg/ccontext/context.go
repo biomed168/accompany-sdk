@@ -98,8 +98,9 @@ func (i *info) IsExternalExtensions() bool {
 	return i.conf.IsExternalExtensions
 }
 
+// OpenAIConfig 返回openai的配置
 func (i *info) OpenAIConfig() *ai_struct.OpenAiConfig {
-	return &i.conf.OpenAiConfig
+	return &i.conf.AiConfig.OpenAiConfig
 }
 
 type apiErrCode struct{}

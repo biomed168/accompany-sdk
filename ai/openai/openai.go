@@ -1,15 +1,15 @@
 package openai
 
 import (
+	"accompany-sdk/pkg/misc"
 	"context"
 	"errors"
 	"fmt"
-	"github.com/mylxsw/aidea-server/pkg/misc"
 	"io"
 	"math/rand"
 	"strings"
 
-	"github.com/mylxsw/go-utils/array"
+	"accompany-sdk/pkg/utils/array"
 	"github.com/pkoukk/tiktoken-go"
 	"github.com/sashabaranov/go-openai"
 )

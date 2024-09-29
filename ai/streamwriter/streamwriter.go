@@ -1,15 +1,16 @@
 package streamwriter
 
 import (
+	"accompany-sdk/pkg/misc"
+	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/mylxsw/aidea-server/pkg/misc"
 	"net/http"
 	"sync"
 
+	"accompany-sdk/pkg/ternary"
 	"github.com/gorilla/websocket"
-	"github.com/mylxsw/asteria/log"
-	"github.com/mylxsw/go-utils/ternary"
+	"github.com/openimsdk/tools/log"
 )
 
 type StreamWriter struct {
@@ -44,7 +45,7 @@ func (e WSError) JSON() []byte {
 
 func (sw *StreamWriter) Close() {
 	if sw.debug {
-		log.Debugf("close stream writer")
+		log.ZDebug(context.Background(), "close stream writer")
 	}
 
 	sw.handleClosed()
@@ -100,20 +101,20 @@ func New[T InitRequest[T]](enableWs bool, enableCors bool, r *http.Request, w ht
 			sw.ws = wsConn
 
 			if sw.debug {
-				log.Debugf("websocket connected: %s", wsConn.RemoteAddr())
+				log.ZDebug(context.Background(), "websocket connected: %s", wsConn.RemoteAddr())
 			}
 
 			// 读取第一条消息，用于获取用户输入
 			_, msg, err := wsConn.ReadMessage()
 			if err != nil {
-				misc.NoError(sw.WriteStream(NewErrorResponse(fmt.Errorf("read websocket message failed: %v", err))))
-				misc.NoError(wsConn.Close())
+				misc.NoError(context.Background(), sw.WriteStream(NewErrorResponse(fmt.Errorf("read websocket message failed: %v", err))))
+				misc.NoError(context.Background(), wsConn.Close())
 				return nil, nil, err
 			}
 
 			if err := json.Unmarshal(msg, &req); err != nil {
-				misc.NoError(sw.WriteStream(NewErrorWithCodeResposne(fmt.Errorf("invalid request: %v", err), http.StatusBadRequest)))
-				misc.NoError(wsConn.Close())
+				misc.NoError(context.Background(), sw.WriteStream(NewErrorWithCodeResposne(fmt.Errorf("invalid request: %v", err), http.StatusBadRequest)))
+				misc.NoError(context.Background(), wsConn.Close())
 				return nil, nil, err
 			}
 
@@ -127,7 +128,7 @@ func New[T InitRequest[T]](enableWs bool, enableCors bool, r *http.Request, w ht
 						return
 					}
 
-					log.Warningf("receive message from websocket: (%d) %s", typ, string(msg))
+					log.ZWarn(context.Background(), "receive message from websocket: (%d) %s", err, typ, string(msg))
 				}
 			}()
 		}
@@ -151,7 +152,7 @@ func (sw *StreamWriter) initSSE() {
 		sw.sseInited = true
 
 		if sw.debug {
-			log.Debug("init sse")
+			log.ZDebug(context.Background(), "init sse")
 		}
 
 		sw.wrapRawResponse(sw.w, func() {
@@ -176,7 +177,7 @@ func (sw *StreamWriter) WriteStream(payload any) error {
 	}
 
 	if sw.debug {
-		log.Debugf("write stream: %s", string(data))
+		log.ZDebug(context.Background(), "write stream: %s", string(data))
 	}
 
 	if sw.ws != nil {
@@ -220,7 +221,8 @@ func (sw *StreamWriter) writeJSON(payload any, statusCode int) {
 
 		sw.w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		sw.w.WriteHeader(statusCode)
-		misc.NoError2(sw.w.Write(data))
+		d, err := sw.w.Write(data)
+		misc.NoError2(context.Background(), d, err)
 	})
 }
 

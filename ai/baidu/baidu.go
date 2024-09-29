@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mylxsw/go-utils/array"
+	"accompany-sdk/pkg/utils/array"
 	"github.com/openimsdk/tools/log"
 	"gopkg.in/resty.v1"
 )
@@ -35,7 +35,7 @@ func NewBaiduAI(apiKey, apiSecret string) *BaiduAIImpl {
 	}
 
 	if err := ai.RefreshAccessToken(); err != nil {
-		log.Errorf("refresh baidu ai access token failed: %s", err)
+		log.ZError(context.Background(), "refresh baidu ai access token failed: %s", err)
 	}
 
 	return ai

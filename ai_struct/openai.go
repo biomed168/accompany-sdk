@@ -72,4 +72,11 @@ type OpenAiConfig struct {
 
 	// FallbackOpenAIAutoProxy 控制是否为备用 OpenAI 启用自动代理，适用于网络访问受限的场景。
 	FallbackOpenAIAutoProxy bool `json:"fallback_openai_auto_proxy" yaml:"fallback_openai_auto_proxy"`
+
+	ProxyConfig ProxyConfig `json:"proxy_config"`
+}
+
+type ProxyConfig struct {
+	ProxyURL    string `json:"proxy_url"`
+	Socks5Proxy string `json:"socks5_proxy"`
 }

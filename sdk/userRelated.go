@@ -1,13 +1,14 @@
 package sdk
 
 import (
+	"accompany-sdk/ai/openai"
+	"accompany-sdk/internal/user"
 	"accompany-sdk/pkg/ccontext"
 	"accompany-sdk/pkg/sdkerrs"
 	"accompany-sdk/sdk_callback"
 	"accompany-sdk/sdk_struct"
 	"context"
 	"github.com/openimsdk/tools/log"
-	"os/user"
 	"strings"
 	"sync"
 	"time"
@@ -54,6 +55,8 @@ type LoginMgr struct {
 	cancel    context.CancelFunc
 	info      *ccontext.GlobalConfig
 	id2MinSeq map[string]int64
+
+	openAi openai.OpenAi
 }
 
 func (u *LoginMgr) getLoginStatus(_ context.Context) int {
@@ -88,6 +91,12 @@ func (u *LoginMgr) InitSDK(config sdk_struct.SDKConfig, listener sdk_callback.On
 
 func (u *LoginMgr) Login(ctx context.Context, userID, token string) error {
 	u.setLoginStatus(Logged)
+	u.user = user.NewUser(userID)
+	u.openAi = openai.NewOpenAi(&u.info.SDKConfig.AiConfig.OpenAiConfig)
 	log.ZInfo(ctx, "login success...", "login cost time: ", time.Since(time.Now()))
 	return nil
+}
+
+func (u *LoginMgr) OpenAi() openai.OpenAi {
+	return u.openAi
 }

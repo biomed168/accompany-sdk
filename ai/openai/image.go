@@ -1,12 +1,12 @@
 package openai
 
 import (
+	"accompany-sdk/pkg/misc"
+	"accompany-sdk/pkg/proxy"
 	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/mylxsw/aidea-server/pkg/misc"
-	"github.com/mylxsw/aidea-server/pkg/proxy"
 	"github.com/mylxsw/aidea-server/pkg/uploader"
 	"gopkg.in/resty.v1"
 	"math/rand"
